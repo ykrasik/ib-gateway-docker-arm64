@@ -1,3 +1,32 @@
+# ib-gateway-arm64
+This repository is an example of how to get Interactive Brokers Gateway running on ARM64. 
+
+This project is a fork of [UnusualAlpha/ib-gateway-docker](https://github.com/UnusualAlpha/ib-gateway-docker/). A big shoutout to them for laying the groundwork and providing the ib-gateway images.
+
+This image combines `ib-gateway` 10.19.2d with Bellsoft JRE 11.0.17+7 & noVNC. While I didn't test every possible version combination, I did find that JRE 11.0.20.1+1 didn't work with this version of `ib-gateway`, and I couldn't find any other JRE version that works with `ib-gateway` versions 10.20+. I also couldn't get it to work at all on Java17.
+
+### Background
+`ib-gateway` relies on JavaFx for its operations. However, the Oracle JVM distribution for ARM64 doesn't come bundled with JavaFx. My attempts to build JavaFx for ARM64 using OpenJDK 8 were unsuccessful, and it appears that this might not be supported, though I might be wrong.
+
+After some testing, I found that `ib-gateway` version 10.19.2d with JRE version 11.0.17+7 (from bellsoft) works. 
+Well, sort of works: the UI appears as a blue box, so you can't use it, but IBC is able to log in which is enough to connect to the IBKR api.
+
+Because of the way the scripts are set-up, the jvm that is bundled with the `ib-gateway` installer is ignored.
+Instead, we download a new Oracle JDK8 for x86_64 systems.
+
+I've added NoVNC on top of the upstream repo because I prefer to use a browser for that.
+                    
+### Instructions
+See sample docker-compose file.
+
+As an optional step, anything placed under `stable/dist` will be copied to the docker image during the build step. 
+This was useful for me when experimenting with version combinations as the docker image didn't need to re-download the jvm and ib-gateway distributions every time.
+                
+### How to use this repo
+This isn't a ready-to-use Docker image. You'll need to clone this repo and tweak it as needed.
+
+**Original readme below**
+
 # Interactive Brokers Gateway Docker
 
 <img src="https://github.com/UnusualAlpha/ib-gateway-docker/blob/master/logo.png" height="300" />

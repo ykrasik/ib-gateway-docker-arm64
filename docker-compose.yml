@@ -2,9 +2,10 @@ version: "3.4"
 
 services:
   ib-gateway:
-    restart: always
+    container_name: ib-gateway
+    restart: unless-stopped
     build:
-      context: ./latest
+      context: ./stable
     environment:
       TWS_USERID: ${TWS_USERID}
       TWS_PASSWORD: ${TWS_PASSWORD}
@@ -14,4 +15,5 @@ services:
     ports:
       - "127.0.0.1:4001:4001"
       - "127.0.0.1:4002:4002"
-      - "127.0.0.1:5900:5900"
+      - "5900:5900"
+      - "6080:6080"

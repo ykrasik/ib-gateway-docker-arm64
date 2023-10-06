@@ -7,7 +7,8 @@ Xvfb :1 -ac -screen 0 1024x768x16 &
 
 if [ -n "$VNC_SERVER_PASSWORD" ]; then
   echo "Starting VNC server"
-  /root/scripts/run_x11_vnc.sh &
+  x11vnc -ncache_cr -display :1 -forever -shared -logappend /var/log/x11vnc.log -bg -noipv6 -passwd "$VNC_SERVER_PASSWORD" &
+  /root/novnc/utils/novnc_proxy --vnc localhost:5900 &
 fi
 
 envsubst < "${IBC_INI}.tmpl" > "${IBC_INI}"
